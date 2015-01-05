@@ -43,12 +43,12 @@ void setup() {
   // set up the number of columns and rows on the LCD 
   lcd.begin(16, 2); 
   // Print a message to the LCD.
-  lcd.print("Line 1");
+  lcd.print("ASR Controller");
   // set the cursor to column 0, line 1
   // line 1 is the second row, since counting begins with 0
   lcd.setCursor(0, 1);
   // print to the second line
-  lcd.print("Line 2");
+  lcd.print("AFG table1 saved");
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
