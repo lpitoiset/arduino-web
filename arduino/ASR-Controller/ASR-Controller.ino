@@ -4,6 +4,8 @@
  display latest application messages from ASR application
  
  needed: arduino uno / ethernet shield / lcd display
+ 
+ lcd wiring
  */
 
 // include
@@ -13,26 +15,18 @@
 #include <Ethernet.h>
 // initialize
 
-#define lcdDisplay  1; // 1 for 2*16 lcd display
-boolean newMessage  =  false;
-String reply = "";
+int lcdDisplay  = 1; // 1 for 2*16 lcd display
+boolean proxyRouting = true; // true for proxy
+String reply = "";  // returned by web server
 
-
-// Enter a MAC address for your controller below.
-// Newer Ethernet shields have a MAC address printed on a sticker on the shield
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-// if you don't want to use DNS (and reduce your sketch size)
-// use the numeric IP instead of the name for the server:
-//IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
-char server[] = "proxy.unhcr.local";    // name address for Google (using DNS)
+char server[] = "proxy.unhcr.local";    // 
 
 // Set the static IP address to use if the DHCP fails to assign
 IPAddress ip(192,168,0,177);
 
 // Initialize the Ethernet client library
-// with the IP address and port of the server 
-// that you want to connect to (port 80 is default for HTTP):
 EthernetClient client;
 
 
@@ -110,26 +104,13 @@ void loop() {
     client.stop();
 
     // do nothing forevermore:
-    lcd.setCursor(0, 1);
-
-    lcd.print(reply);
-    while(true);
-  }
-
-  //delay(5000);
-
-
-  if (newMessage) {
-    // clean up the screen before printing a new reply
     lcd.clear();
-    // set the cursor to column 0, line 0     
-    lcd.setCursor(0, 0);
-    // print some text
-    lcd.print("ASR update:");
-    // move the cursor to the second line
-    lcd.setCursor(0, 1);
-
-    lcd.print("Message");
+    // lcd.print(reply);
+    lcd.setCursor(0,0);
+    lcd.print("ASR status 0-0-0");
+    lcd.setCursor(0,1);
+    lcd.print("AFG table1 saved");
+    while(true);
   }
 }
 
