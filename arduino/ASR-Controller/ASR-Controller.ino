@@ -15,6 +15,7 @@
 
 #define lcdDisplay  1; // 1 for 2*16 lcd display
 boolean newMessage  =  false;
+String reply = "";
 
 
 // Enter a MAC address for your controller below.
@@ -48,7 +49,7 @@ void setup() {
   // line 1 is the second row, since counting begins with 0
   lcd.setCursor(0, 1);
   // print to the second line
-  lcd.print("AFG table1 saved");
+  lcd.print("...");
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -65,19 +66,26 @@ void setup() {
   // give the Ethernet shield a second to initialize:
   delay(1000);
   Serial.println("connecting...");
+  lcd.setCursor(0, 1);
+  lcd.print("connecting");
 
   // if you get a connection, report back via serial:
   if (client.connect(server, 8080)) {
     Serial.println("connected");
+    lcd.setCursor(0, 1);
+    lcd.print("connected");
     // Make a HTTP request:
-    client.println("GET /search?q=arduino HTTP/1.1");
-    client.println("Host: www.google.com");
+    client.println("GET http://popdata.unhcr.org/ HTTP/1.0");
     client.println("Connection: close");
+    lcd.setCursor(0, 1);
+    lcd.print("connection closed");
     client.println();
   } 
   else {
     // kf you didn't get a connection to the server:
     Serial.println("connection failed");
+    lcd.setCursor(0, 1);
+    lcd.print("connection failed");
   }
 }
 
@@ -92,6 +100,7 @@ void loop() {
   if (client.available()) {
     char c = client.read();
     Serial.print(c);
+    reply = String(reply + c);
   }
 
   // if the server's disconnected, stop the client:
@@ -101,10 +110,13 @@ void loop() {
     client.stop();
 
     // do nothing forevermore:
+    lcd.setCursor(0, 1);
+
+    lcd.print(reply);
     while(true);
   }
 
-  delay(5000);
+  //delay(5000);
 
 
   if (newMessage) {
@@ -120,4 +132,5 @@ void loop() {
     lcd.print("Message");
   }
 }
+
 
