@@ -1,15 +1,11 @@
+/* UNHCR-controller
 
+Laurent Pitoiset 2015
 
-// UNHCR-controller
-
-/* Laurent Pitoiset 2015
- 
- ASR controller
- display latest application messages from ASR application
+ display latest application messages from UNHCR data portal API
  
  needed: arduino uno / ethernet shield / lcd display
  
- lcd wiring
  */
 
 // include
@@ -19,18 +15,16 @@
 #include <Ethernet.h>
 #include <ArduinoJson.h> 
 
-// initialize
-;
+// application parameters
 
 boolean apiCall = false;
 
-
-int lcdDisplay  = 1; // 1 for 2*16 lcd display
+// init
 boolean proxyRouting = true; // true for proxy
 String reply = "";  // returned by web server
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-char server[] = "proxy.unhcr.local";    // 
+char proxyserver[] = "proxy.unhcr.local";    // 
 
 // Set the static IP address to use if the DHCP fails to assign
 IPAddress ip(192,168,0,177);
@@ -45,20 +39,17 @@ LiquidCrystal lcd(9, 8, 5, 4, 3, 2);
 void setup() {
   // set up the lcd display
   lcd.clear();
-  // set up the number of columns and rows on the LCD 
   lcd.begin(16, 2); 
-  // Print a message to the LCD.
   lcd.print("ASR Controller");
-  // set the cursor to column 0, line 1
-  // line 1 is the second row, since counting begins with 0
   lcd.setCursor(0, 1);
-  // print to the second line
   lcd.print("...");
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
+  /*
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
+  */
   if (apiCall) 
   {
     // start the Ethernet connection:
@@ -75,7 +66,7 @@ void setup() {
     lcd.print("connecting");
 
     // if you get a connection, report back via serial:
-    if (client.connect(server, 8080)) {
+    if (client.connect(proxyserver, 8080)) {
       Serial.println("connected");
       lcd.setCursor(0, 1);
       lcd.print("connected");
@@ -83,14 +74,14 @@ void setup() {
       client.println("GET http://data.unhcr.org/api/stats/persons_of_concern.json?year=2013&country_of_origin=AFG&country_of_residence=PAK HTTP/1.0");
       client.println("Connection: close");
       lcd.setCursor(0, 1);
-      lcd.print("connection closed");
+      lcd.print("conn. closed");
       client.println();
     } 
     else {
       // kf you didn't get a connection to the server:
-      Serial.println("connection failed");
+      Serial.println("conn. failed");
       lcd.setCursor(0, 1);
-      lcd.print("connection failed");
+      lcd.print("conn. failed");
     }
   }
 }
