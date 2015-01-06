@@ -118,14 +118,17 @@ double longitude   = root["data"][1];
 */
 
 const char* json_year = root["year"];
+const char* json_CoR = root["country_of_residence"];
+const char* json_CoO = root["country_of_origin"];
+const char* json_refugees = root["refugees"];
 
     // do nothing forevermore:
     lcd.clear();
     // lcd.print(reply);
     lcd.setCursor(0,0);
-    lcd.print("UNHCR API");
+    lcd.print(String(json_year)+" "+String(json_CoO)+" -> "+String(json_CoR));
     lcd.setCursor(0,1);
-    lcd.print(String("year "+String(json_year)));
+    lcd.print(String("R "+String(json_refugees)));
     while(true);
   
 }
