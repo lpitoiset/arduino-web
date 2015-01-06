@@ -1,3 +1,5 @@
+
+
 // UNHCR-controller
 
 /* Laurent Pitoiset 2015
@@ -15,6 +17,7 @@
 #include <LiquidCrystal.h>
 #include <SPI.h>
 #include <Ethernet.h>
+#include <ArduinoJson.h> 
 // initialize
 
 int lcdDisplay  = 1; // 1 for 2*16 lcd display
@@ -90,7 +93,8 @@ void setup() {
 
 // loop
 void loop() {
-
+  
+  
   // if there are incoming bytes available 
   // from the server, read them and print them:
   if (client.available()) {
@@ -98,22 +102,32 @@ void loop() {
     Serial.print(c);
     reply = String(reply + c);
   }
+  
+//char json[] = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+char json[] = "{\"year\":\"2013\",\"country_of_residence\":\"PAK\",\"country_of_residence_en\":\"Pakistan\",\"country_of_origin\":\"AFG\",\"country_of_origin_en\":\"Afghanistan\",\"refugees\":\"1615876\",\"asylum_seekers\":\"5323\",\"returned_refugees\":null,\"idps\":null,\"returned_idps\":null,\"stateless_persons\":null,\"others_of_concern\":null,\"total_population\":\"1621199\"}";
+//char json[] = "{\"year\":\"2013\"}";
+StaticJsonBuffer<200> jsonBuffer;
 
-  // if the server's disconnected, stop the client:
-  if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting.");
-    client.stop();
+JsonObject& root = jsonBuffer.parseObject(json);
+//JsonObject& root2 = jsonBuffer.parseArray(root);
+/*
+const char* sensor = root["sensor"];
+long time          = root["time"];
+double latitude    = root["data"][0];
+double longitude   = root["data"][1];
+*/
+
+const char* json_year = root["year"];
 
     // do nothing forevermore:
     lcd.clear();
     // lcd.print(reply);
     lcd.setCursor(0,0);
-    lcd.print("ASR status 0-0-0");
+    lcd.print("UNHCR API");
     lcd.setCursor(0,1);
-    lcd.print("AFG table1 saved");
+    lcd.print(String("year "+String(json_year)));
     while(true);
-  }
+  
 }
 
 
