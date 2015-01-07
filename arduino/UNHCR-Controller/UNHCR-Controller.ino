@@ -104,7 +104,8 @@ void loop() {
   }
   //char json[] = "[{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}, {\"sensor\":\"gps\",\"time\":1351824140,\"data\":[50.756080,21.302038]}]";
   //char json[] ="{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
-  char json[] = "[{\"year\":\"2013\",\"country_of_residence\":\"PAK\",\"country_of_residence_en\":\"Pakistan\",\"country_of_origin\":\"AFG\",\"country_of_origin_en\":\"Afghanistan\",\"refugees\":\"1615876\",\"asylum_seekers\":\"5323\",\"returned_refugees\":null,\"idps\":null,\"returned_idps\":null,\"stateless_persons\":null,\"others_of_concern\":null,\"total_population\":\"1621199\"}]";
+  //char json[] = "[{\"year\":\"2013\",\"country_of_residence\":\"PAK\",\"country_of_residence_en\":\"Pakistan\",\"country_of_origin\":\"AFG\",\"country_of_origin_en\":\"Afghanistan\",\"refugees\":\"1615876\",\"asylum_seekers\":\"5323\",\"returned_refugees\":null,\"idps\":null,\"returned_idps\":null,\"stateless_persons\":null,\"others_of_concern\":null,\"total_population\":\"1621199\"} , {\"year\":\"2014\",\"country_of_residence\":\"PAK\",\"country_of_residence_en\":\"Pakistan\",\"country_of_origin\":\"AFG\",\"country_of_origin_en\":\"Afghanistan\",\"refugees\":\"1615876\",\"asylum_seekers\":\"5323\",\"returned_refugees\":null,\"idps\":null,\"returned_idps\":null,\"stateless_persons\":null,\"others_of_concern\":null,\"total_population\":\"1621199\"}]";
+  char json[] = "[{\"year\":\"2013\",\"country_of_residence\":\"PAK\"}]";
   //char json[] = "[{\"year\":\"2013\"}, {\"year\":\"2014\"}]";
 
   StaticJsonBuffer<200> jsonBuffer;
@@ -126,8 +127,11 @@ const char* sensor = root["sensor"];
    */
 
   const char* json_year = root[0]["year"];
+  //Serial.println(String(root));
+  Serial.println(json_year);
+  //const char* json_year2 = root[1]["year"];
   
-  //const char* json_CoR = root[0]["country_of_residence"];
+  const char* json_CoR = root[0]["country_of_residence"];
    //const char* json_CoO = root[0]["country_of_origin"];
    //const char* json_refugees = root[0]["refugees"];
    //const char* json_total = root["total_population"];
@@ -138,7 +142,7 @@ const char* sensor = root["sensor"];
   //lcd.print(String(json_year)+" "+String(json_CoO)+" -> "+String(json_CoR));
   lcd.setCursor(0,1);
   //lcd.print(String("R "+String(json_refugees)));
-  lcd.print(json_year);
+  lcd.print(String(json_year));
   // do nothing forevermore:
   while(true);
 
