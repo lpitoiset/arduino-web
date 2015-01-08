@@ -17,11 +17,12 @@ Laurent Pitoiset 2015
 
 // application parameters
 
-boolean apiCall = false;
+boolean apiCall = true;
 
 // init
 boolean proxyRouting = true; // true for proxy
 String reply = "";  // returned by web server
+char* json_reply = "";
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 char proxyserver[] = "proxy.unhcr.local";    // 
@@ -99,7 +100,7 @@ void loop() {
     while (client.available()) {
       char c = client.read();
       Serial.print(c);
-      reply = String(reply + c);
+      json_reply =json_reply + c;
     }
   }
   //char json[] = "[{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}, {\"sensor\":\"gps\",\"time\":1351824140,\"data\":[50.756080,21.302038]}]";
